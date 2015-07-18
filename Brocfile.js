@@ -20,6 +20,7 @@ function getVendorScripts(names)
 		var bj = require('./' + p);
 		ret[i] = path.join(name, bj.main);
 	}
+	return ret;
 }
 
 // Specify the different content dirs
@@ -72,5 +73,5 @@ const scripts = concatFiles(applicationJS, {
 const styles = compileSass([sassDir], 'app.scss', 'app.css');
 
 module.exports = mergeTrees([
-	styles, indexHTML, staticAssets, scripts
+	vendor, styles, indexHTML, staticAssets, scripts
 ]);
