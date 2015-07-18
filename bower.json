@@ -1,0 +1,23 @@
+{
+  "name": "brogue",
+  "version": "1.0.0",
+  "homepage": "https://github.com/ixtli/brogue",
+  "authors": [
+    "ixtli <ixplode@gmail.com>"
+  ],
+  "description": "Browser-based roguelike.",
+  "main": "app/js/main.js",
+  "keywords": [
+    "browser",
+    "rogue",
+    "roguelike"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

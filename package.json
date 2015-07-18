@@ -1,0 +1,24 @@
+{
+  "name": "brogue",
+  "version": "1.0.0",
+  "description": "A browser-based roguelike.",
+  "main": "app/js/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ixtli/brogue.git"
+  },
+  "keywords": [
+    "browser",
+    "rogue",
+    "roguelike"
+  ],
+  "author": "ixtli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ixtli/brogue/issues"
+  },
+  "homepage": "https://github.com/ixtli/brogue#readme"
+}
