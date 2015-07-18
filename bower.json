@@ -19,5 +19,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "devDependencies": {
+    "requirejs": "~2.1.19",
+    "jquery": "~2.1.4"
+  }
 }

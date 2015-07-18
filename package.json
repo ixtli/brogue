@@ -20,5 +20,14 @@
   "bugs": {
     "url": "https://github.com/ixtli/brogue/issues"
   },
-  "homepage": "https://github.com/ixtli/brogue#readme"
+  "homepage": "https://github.com/ixtli/brogue#readme",
+  "devDependencies": {
+    "broccoli": "^0.16.4",
+    "broccoli-concat": "0.0.13",
+    "broccoli-es6modules": "^1.0.1",
+    "broccoli-funnel": "^0.2.3",
+    "broccoli-merge-trees": "^0.2.2",
+    "broccoli-sass": "^0.6.6",
+    "broccoli-sourcemap-concat": "^1.0.0"
+  }
 }
