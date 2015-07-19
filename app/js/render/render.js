@@ -1,8 +1,10 @@
+import ListenerMixin from '../mixin/listener';
 import { tileWidth, tileHeight } from './tile';
 
 // Amount of ms to wait before resizing again
-const resizeTimeout = 150;
+const resizeWait = 150;
 const requestFrame = window.requestAnimationFrame;
+export const resizeCallbackFunctionName = 'containerHasResized';
 
 function Renderer()
 {
@@ -15,64 +17,30 @@ function Renderer()
 	this._containerHeight = 0;
 
 	this._resizeListeners = [];
-	this._resizeDebounceTimeout = 0;
-	this._resizeFxn = this.resize.bind(this);
+	this._resizeDebounce = _.debounce(this.resize.bind(this), resizeWait);
 	this._renderFxn = this.render.bind(this);
 }
+
+
+// Apply mixins
+_.extend(Renderer.prototype, ListenerMixin.prototype);
+
 
 Renderer.prototype.initialize = function()
 {
 	$('body').prepend(this._container);
-	$(window).on('resize', this._resizeEventHandler.bind(this));
+	$(window).on('resize', this._resizeDebounce);
+	this.registerEvent('resize', resizeCallbackFunctionName);
 	this.resize();
 	requestFrame(this._renderFxn);
 }
 
+
 Renderer.prototype.destroy = function()
 {
 	$(window).off('resize');
-
-	if (this._resizeDebounceTimeout)
-	{
-		clearTimeout(this._resizeDebounceTimeout);
-		this._resizeDebounceTimeout = 0;
-	}
-
+	this.resetListenerState();
 	this._container.empty().remove();
-}
-
-
-Renderer.prototype._resizeEventHandler = function()
-{
-	if (this._resizeDebounceTimeout)
-	{
-		clearTimeout(this._resizeDebounceTimeout);
-	}
-
-	this._resizeDebounceTimeout = setTimeout(this._resizeFxn, resizeTimeout);
-}
-
-
-Renderer.prototype.listenForResize = function(listener)
-{
-	this._resizeListeners.push(listener);
-}
-
-
-Renderer.prototype.stopListeningForResize = function(listener)
-{
-	var listeners = this._resizeListeners;
-	const size = listeners.length;
-	for (var i = 0; i < size; i++)
-	{
-		if (listners[i] === listner)
-		{
-			return this._resizeListeners.splice(i, 1);
-		}
-	}
-
-	console.error('Listener', listener, 'not found.');
-	return null;
 }
 
 
@@ -120,13 +88,7 @@ Renderer.prototype.resize = function()
 	this._containerWidth = width;
 	this._containerHeight = height;
 
-	// Now that we're updated, tell all listeners
-	const listeners = this._resizeListeners;
-	const listenerCount = listeners.length;
-	for (var i = listenerCount - 1; i >= 0; i--)
-	{
-		listeners[i].containerHasResized(tilesWide, tilesHigh);
-	}
+	this.triggerEvent('resize', [tilesWide, tilesHigh]);
 
 	console.timeEnd('resize');
 

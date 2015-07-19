@@ -1,11 +1,12 @@
 import renderer from '../render/render';
 import DenseTileLayer from '../render/dense-tile-layer';
-import {TileAttributes } from '../render/tile';
+import { resizeCallbackFunctionName } from '../render/render';
+import { TileAttributes } from '../render/tile';
 import { Rand, EnumFromArray } from '../util';
 
 const worldWidth = 250;
 const worldHeight = 125;
-const terrain = ['floor', 'wall'];
+const terrain = new Array('floor', 'wall');
 const terrainEnum = EnumFromArray(terrain);
 const terrainAttrs = [
 	new TileAttributes('black'),
@@ -21,7 +22,6 @@ export default function WorldMap()
 
 WorldMap.prototype.initialize = function()
 {
-
 	// Make the terrain
 	this.regenerateTerrain();
 
@@ -30,7 +30,7 @@ WorldMap.prototype.initialize = function()
 
 	// Add the map to the renderer
 	renderer.addLayer(layer);
-	renderer.listenForResize(this);
+	renderer.listen('resize', this);
 
 	const dim = renderer.tileDimensions();
 	this.containerHasResized(dim.width, dim.height);
@@ -86,13 +86,13 @@ WorldMap.prototype.randomColors = function()
 
 WorldMap.prototype.destroy = function()
 {
-	renderer.stopListeningForResize(this);
+	renderer.stopListening('resize', this);
 	renderer.removeLayer(this._layer);
 	this._layer.destroy();
 }
 
 
-WorldMap.prototype.containerHasResized = function(newWidth, newHeight)
+WorldMap.prototype[resizeCallbackFunctionName] = function(newWidth, newHeight)
 {
 	this._layer.resizeLayer(newWidth, newHeight);
 	this._layer.repaint(0, 0, this._terrain, worldWidth, terrainAttrs);

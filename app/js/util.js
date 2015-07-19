@@ -23,3 +23,4 @@ export function EnumFromArray(arr)
 
 	return ret;
 }
+

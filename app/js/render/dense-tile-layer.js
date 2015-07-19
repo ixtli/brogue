@@ -34,6 +34,8 @@ DenseTileLayer.prototype.toString = function()
 
 DenseTileLayer.prototype.resizeLayer = function(newWidth, newHeight)
 {
+	// @TODO: Trigger this flow at the beginning of the frame, not whenever this
+	// method is invoked.
 	const newTotal = newWidth * newHeight;
 	const oldArray = this._tiles;
 	const oldTotal = oldArray.length;

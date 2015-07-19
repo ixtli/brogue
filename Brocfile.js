@@ -52,7 +52,7 @@ var applicationJS = new ES6Modules(jsDir, {
 
 // Concat main vendor files
 // N.b.: This determines concat order
-const vendorPaths = getVendorScripts(['requirejs', 'jquery']);
+const vendorPaths = getVendorScripts(['lodash', 'jquery', 'requirejs']);
 const vendor = concat(bowerDir, {
 	description: 'Concat Vendor Scripts',
 	inputFiles: vendorPaths,
