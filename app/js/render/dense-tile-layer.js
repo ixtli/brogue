@@ -65,7 +65,9 @@ DenseTileLayer.prototype.resizeLayer = function(newWidth, newHeight)
 		}
 	}
 
-	this._container.append(newTiles);
+	// @TODO: Don't remove and readd elements from the dom. Get
+	// the intersection and add/remove that
+	this._container.empty().append(newArray);
 
 	this._currentWidth = newWidth;
 	this._currentHeight = newHeight;

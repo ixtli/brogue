@@ -21,19 +21,19 @@ export default function WorldMap()
 
 WorldMap.prototype.initialize = function()
 {
+
+	// Make the terrain
+	this.regenerateTerrain();
+
 	// Make the layer for the map
-	const dim = renderer.tileDimensions();
 	var layer = this._layer;
-	layer.resizeLayer(dim.width, dim.height);
 
 	// Add the map to the renderer
 	renderer.addLayer(layer);
 	renderer.listenForResize(this);
 
-	// Make the terrain
-	this.regenerateTerrain();
-
-	// this.randomColors();
+	const dim = renderer.tileDimensions();
+	this.containerHasResized(dim.width, dim.height);
 }
 
 
@@ -53,8 +53,6 @@ WorldMap.prototype.regenerateTerrain = function()
 	}
 
 	this._terrain = arr;
-
-	this._layer.repaint(0,0,arr, worldWidth, terrainAttrs);
 	
 	console.timeEnd('Regenerate Terrain');
 }
@@ -97,5 +95,6 @@ WorldMap.prototype.destroy = function()
 WorldMap.prototype.containerHasResized = function(newWidth, newHeight)
 {
 	this._layer.resizeLayer(newWidth, newHeight);
+	this._layer.repaint(0, 0, this._terrain, worldWidth, terrainAttrs);
 }
 
