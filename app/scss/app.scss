@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900);
+
 $tileWidth: 16px;
 $tileHeight: 16px;
 $tilePadding: 0px;
@@ -9,25 +11,33 @@ html, body
 	height: 100%;
 	margin: 0;
 	padding: 0;
+
 }
 
 div#game
 {
+	font-family: 'Source Code Pro', monospace;
+
 	width: 100%;
 	height: 100%;
 	position: relative;
 
-	background-color: lighten(gray, 30%);
+	// This makes it obvious when there's a bad border
+	background-color: lighten(red, 15%);
 
-	.tile
+	div.layer
 	{
-		width: $tileWidth;
-		height: $tileHeight;
-		padding: $tilePadding;
-		margin: $tileMargin;
 
-		background-color: lighten(gray, 15%);
+		.tile
+		{
+			width: $tileWidth;
+			height: $tileHeight;
+			padding: $tilePadding;
+			margin: $tileMargin;
 
-		position: absolute;
+			background-color: lighten(gray, 25%);
+
+			position: absolute;
+		}
 	}
 }
