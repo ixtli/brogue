@@ -7,6 +7,10 @@ const worldWidth = 250;
 const worldHeight = 125;
 const terrain = ['floor', 'wall'];
 const terrainEnum = EnumFromArray(terrain);
+const terrainAttrs = [
+	new TileAttributes('black'),
+	new TileAttributes('gray'),
+];
 
 export default function WorldMap()
 {
@@ -17,9 +21,6 @@ export default function WorldMap()
 
 WorldMap.prototype.initialize = function()
 {
-	// Make the terrain
-	this.regenerateTerrain();
-
 	// Make the layer for the map
 	const dim = renderer.tileDimensions();
 	var layer = this._layer;
@@ -28,6 +29,9 @@ WorldMap.prototype.initialize = function()
 	// Add the map to the renderer
 	renderer.addLayer(layer);
 	renderer.listenForResize(this);
+
+	// Make the terrain
+	this.regenerateTerrain();
 
 	// this.randomColors();
 }
@@ -40,15 +44,17 @@ WorldMap.prototype.regenerateTerrain = function()
 	const count = worldWidth * worldHeight;
 	var arr = new Uint32Array(count);
 
-	const maxWalls = 25;
+	const maxWalls = 205;
 	const wallCount = Rand.int(maxWalls);
 	const wallId = terrainEnum.wall;
 	for (var i = 0; i < wallCount; i++)
 	{
-		arr[i] = wallId;
+		arr[Rand.int(count - 1)] = wallId;
 	}
 
 	this._terrain = arr;
+
+	this._layer.repaint(0,0,arr, worldWidth, terrainAttrs);
 	
 	console.timeEnd('Regenerate Terrain');
 }
@@ -72,8 +78,8 @@ WorldMap.prototype.randomColors = function()
 
 	setInterval(function _doStuff() {
 		var dimensions = layer.getDimensions();
-		const x = Rand.int(dimensions.width - 1);
-		const y = Rand.int(dimensions.height - 1);
+		const x = Rand.int(dimensions.width);
+		const y = Rand.int(dimensions.height);
 		const bg = Rand.int(colorCount);
 		layer.applyAttributes(x,y,colors[bg]);
 	}, 5);

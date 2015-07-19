@@ -87,20 +87,34 @@ DenseTileLayer.prototype.resizeLayer = function(newWidth, newHeight)
  **/
 DenseTileLayer.prototype.repaint = function(top, left, data, dataWidth, attrs)
 {
+	console.time('repaint');
 	const width = this._currentWidth;
-	const height = this._currentHeight;
+	const tileCount = this._tiles.length;
 
-	var idx;
-
+	var idx = left + (top * dataWidth);
+	var y = 0, x = 0;
 	var diffArray = this._diffArray;
 
-	for (var i = 0; i < width; i++)
+	for (var i = 0; i < tileCount; i++)
 	{
-		diffArray[idx] = attrs[data[idx]];
+		diffArray[i] = attrs[data[idx]];
+
+		x++;
+
+		if (x >= width)
+		{
+			x = 0;
+			y++;
+			idx = left + (y * dataWidth);
+		} else {
+			idx++;
+		}
 	}
 
 	// Reapply the entire attribute set
 	this._dirty = true;
+	
+	console.timeEnd('repaint');
 }
 
 
@@ -128,18 +142,20 @@ DenseTileLayer.prototype.update = function()
 {
 	const array = this._diffArray;
 	var tiles = this._tiles;
-	var i = this._diffCount - 1;
+	var i;
 
 	if (this._dirty)
 	{
-		for (; i >= 0; i--)
+		console.time('full redraw');
+		for (i = tiles.length - 1; i >= 0; i--)
 		{
 			array[i].applyToElement(tiles[i]);
 		}
+		console.timeEnd('full redraw');
 		this._dirty = false;
 	} else {
 		const list = this._diffList;
-		for (; i >= 0; i--)
+		for (i = this._diffCount - 1; i >= 0; i--)
 		{
 			var idx = list[i];
 			array[idx].applyToElement(tiles[idx]);
